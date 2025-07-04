@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: app/
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - 8080:8080
+    environment:
+      - name=value
+  api:
+    build:
+      context: api/
+      dockerfile: Dockerfile
+    container_name: api
+    ports:
+      - 8081:8081
+    environment:
+      - DB_PASSWORD=pass
+      - DB_HOST=db
+    depends_on:
+      - db
+  db:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+    volumes:
+      - db_data:/var/lib/mysql
+volumes:
+  db_data:
